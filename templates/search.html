@@ -1,0 +1,15 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Buscar pelicula
+{% endblock %}
+
+{% block main %}
+    <form action="/search" method="post" class="animated animatedFadeInUp fadeInUp">
+        <div class="form-group">
+            <h1>Buscar pelicula</h1>
+            <input autocomplete="off" autofocus class="form-control" name="title" placeholder="Titulo" type="text">
+        </div>
+        <button class="myBtn" type="submit">Buscar</button>
+    </form>
+{% endblock %}
