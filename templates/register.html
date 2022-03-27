@@ -6,16 +6,16 @@
 
 {% block main %}
     <div class="login-form">
-        <form action="" method="post">
-            <h2 class="text-center">Registrate</h2>       
+        <form action="/register" method="post">
+            <h2 class="text-center">Registrate</h2>
             <div class="form-group">
-                <input type="text" class="form-control rounded" placeholder="Nombre" required="required">
+                <input type="text" class="form-control rounded" name="username" placeholder="Nombre de Usuario" required="required">
             </div>
             <div class="form-group">
-                <input type="text" class="form-control rounded" placeholder="Correo" required="required">
+                <input type="text" class="form-control rounded" name="email" placeholder="Correo" required="required">
             </div>
             <div class="form-group">
-                <input type="password" class="form-control rounded" placeholder="Contraseña" required="required">
+                <input type="password" class="form-control rounded" name="password" placeholder="Contraseña" required="required">
             </div>
             <div class="form-group">
                 <button type="submit" class="myBtn2 rounded">Registrarse</button>

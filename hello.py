@@ -1,4 +1,4 @@
-from flask import Flask, flash, jsonify, redirect, render_template, request, session
+from flask import Flask, flash, jsonify, redirect, render_template, request, session, url_for
 from flask_session import Session
 from tempfile import mkdtemp
 from werkzeug.exceptions import default_exceptions, HTTPException, InternalServerError
@@ -43,11 +43,43 @@ def movie_info():
     #cur = sqlite3.connect(database).cursor()
     return render_template('info.html')
 
-@app.route('/login')
+@app.route('/login', methods=["GET", "POST"])
 def login():
+
+    if request.method == "POST":
+
+        cur = sqlite3.connect(database).cursor()
+
+        email = request.form.get('email')
+        password = generate_password_hash(request.form.get('password'))
+
     return render_template('login.html')
 
-@app.route('/register')
+
+@app.route('/register', methods=["GET", "POST"])
 def register():
+
+    con = sqlite3.connect(database)
+    cur = con.cursor()
+
+    if request.method == "POST":
+        
+        name = request.form.get('username')
+        email = request.form.get('email')
+        password = generate_password_hash(request.form.get('password'))
+
+        # Syntactic Sugar
+        guardar_usuario(name, email, password)
+
+        return redirect(url_for('login'))
+
     return render_template('register.html')
 
+def guardar_usuario(name, email, password):
+
+    con = sqlite3.connect(database)
+    cur = con.cursor()
+
+    cur.execute("INSERT INTO users (username, email, hash) VALUES (?, ?, ?)", (name, email, password))
+    con.commit()
+    con.close()
