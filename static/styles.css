@@ -108,6 +108,18 @@ main img
   padding: 33px 30px;
 }
 
+div.sticky {
+  position: -webkit-sticky; /* Safari */
+  position: sticky;
+  top: 0;
+  color: #eb7163;
+  font-weight: bold;
+}
+
+.navbar-gray {
+  background-color: #f7f7f7;
+}
+
 .myBtn {
   margin-left: .5em;
   border-radius: 100px;
