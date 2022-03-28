@@ -6,7 +6,7 @@
 
 {% block main %}
     {% for movie in movies %}
-        <a href="{{ url_for('movie', id=movie[0]) }}"><img src="/static/images/{{movie[9]}}" alt="{{movie[1]}}" width="267" height="400"></a>
+        <a href="{{ url_for('movie', id=movie[0]) }}"><img src="/static/images/posters/{{movie[9]}}" alt="{{movie[1]}}" width="267" height="400"></a>
         <h2>{{movie[1]}}</h2>
     {% endfor %}
 {% endblock %}

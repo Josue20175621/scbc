@@ -117,6 +117,13 @@ def register():
 
     return render_template('register.html')
 
+@app.route('/buy', methods=["GET", "POST"])
+@login_required
+def buy():
+
+    return render_template('buy.html')
+
+
 def guardar_usuario(first_name, last_name, email, password):
 
     con = sqlite3.connect(database)
