@@ -33,10 +33,6 @@ def index():
     
     movies = cur.execute("SELECT * FROM movies ORDER BY title").fetchall()
 
-    print(f"Title {movies[0][1]}")
-    print(f"Poster {movies[0][9]}")
-    print(f"Brief {movies[0][10]}")
-
     return render_template('index.html', movies=movies)
 
 @app.route('/search', methods=["GET", "POST"])
