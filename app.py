@@ -31,9 +31,13 @@ def index():
     
     cur = sqlite3.connect(database).cursor()
     
-    images = cur.execute("SELECT * FROM images ORDER BY brief").fetchall()
+    movies = cur.execute("SELECT * FROM movies ORDER BY title").fetchall()
 
-    return render_template('index.html', images=images)
+    print(f"Title {movies[0][1]}")
+    print(f"Poster {movies[0][9]}")
+    print(f"Brief {movies[0][10]}")
+
+    return render_template('index.html', movies=movies)
 
 @app.route('/search', methods=["GET", "POST"])
 def search():
@@ -43,22 +47,24 @@ def search():
     if request.method == "POST":
         movie_title = request.form.get("title")
 
-        results = cur.execute("SELECT * FROM images WHERE brief LIKE ?", ('%'+movie_title+'%',)).fetchall()
+        results = cur.execute("SELECT * FROM movies WHERE title LIKE ?", ('%'+movie_title+'%',)).fetchall()
 
         # No existen peliculas con ese titulo o que contengan ese titulo
         if len(results) == 0:
             return render_template("search_e.html", title=movie_title)
 
         return render_template('searchres.html', results=results)
-
     else:
         return render_template('search.html')
 
-@app.route('/info')
-def movie_info():
+@app.route('/movie/<int:id>')
+def movie(id):
     """ Informacion de la pelicula"""
-    #cur = sqlite3.connect(database).cursor()
-    return render_template('info.html')
+    cur = sqlite3.connect(database).cursor()
+
+    movies = cur.execute("SELECT * FROM movies WHERE id = ?", (id, )).fetchall()
+
+    return render_template('movie.html', movies=movies)
 
 @app.route('/login', methods=["GET", "POST"])
 def login():

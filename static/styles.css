@@ -301,19 +301,6 @@ tbody tr {
     }
 }
 
-/* safari support
-@-webkit-keyframes fadeInUp {
-    from {
-        transform: translate3d(0,20px,0)
-    }
-
-    to {
-        transform: translate3d(0,0,0);
-        opacity: 1
-    }
-}
-*/
-
 .animated {
     animation-duration: 0.2s;
     animation-fill-mode: both;

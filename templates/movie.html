@@ -1,0 +1,13 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Informacion
+{% endblock %}
+
+{% block main %}
+    {% for movie in movies %}
+        <h1>{{movie[1]}}</h1>
+        <img src="/static/images/{{movie[9]}}" alt="{{movie[1]}}" width="267" height="400">
+        <p>{{movie[10]}}</p>
+    {% endfor %}
+{% endblock %}
