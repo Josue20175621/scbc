@@ -4,7 +4,7 @@ from flask_session import Session
 from tempfile import mkdtemp
 from werkzeug.exceptions import HTTPException, InternalServerError
 from werkzeug.security import check_password_hash, generate_password_hash #sha256
-from helpers import admin_required, format, login_required, format_time
+from helpers import format, login_required, format_time
 import sqlite3
 
 app = Flask(__name__)

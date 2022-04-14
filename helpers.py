@@ -15,20 +15,6 @@ def login_required(f):
         return f(*args, **kwargs)
     return decorated_function
 
-def admin_required(f):
-    """
-    Decorate routes to require login.
-
-    http://flask.pocoo.org/docs/1.0/patterns/viewdecorators/
-    """
-    @wraps(f)
-    def decorated_function(*args, **kwargs):
-        if session.get("admin_id") is None:
-            flash('No tienes permisos para acceder a ese recurso')
-            return redirect("/")
-        return f(*args, **kwargs)
-    return decorated_function
-
 def format(l):
     _str = ""
     for i in l:
