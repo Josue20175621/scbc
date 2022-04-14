@@ -1,13 +1,62 @@
 {% extends "layout.html" %}
 
 {% block title %}
-    Informacion
+    {{info_pelicula[0][0]}}
 {% endblock %}
 
 {% block main %}
-    {% for movie in movies %}
-        <h1>{{movie[1]}}</h1>
-        <img src="/static/images/posters/{{movie[9]}}" alt="{{movie[1]}}" width="267" height="400">
-        <p>{{movie[10]}}</p>
+    {% for movie in info_pelicula %}
+        <h1>{{movie[0]}}</h1>
+        <img src="/static/images/posters/{{movie[3]}}" alt="{{movie[0]}}" width="267" height="400">
+        
+        <p><strong>Dirigida por: </strong>{{directores}}</p>
+        <p><strong>Actores: </strong>{{actores}}</p>
+        <p><strong>Año: </strong> {{movie[1]}}</p>
+        <p><strong>Duracion: </strong> {{movie[4]}} minutos</p>
+        <p><strong>Clasificacion: </strong> {{movie[5]}}</p>
+        <p><strong>Idioma: </strong> {{idiomas}}</p>
+        <p><strong>Pais: </strong> {{movie[7]}}</p>
+
+        <p><strong>Sinopsis: </strong>{{movie[2]}}</p>
+
+        <form action="/seats" method="post">
+            <input type="hidden" name="movie_name" value="{{movie[0]}}"/>
+            <div class="form-group">
+                {% if tandas %}
+                <label for="tanda"><strong>Selecciona la tanda</strong></label>
+                <select name="tanda" id="tanda">
+                    <option>Tanda</option>
+                    {% for tanda in tandas %}
+                        <option value="{{format_time(tanda[3])}}">{{format_time(tanda[3])}}</option>
+                    {% endfor %}
+                </select>
+                    {% if session.user_id %}
+                    <div class="form-group">
+                        <label for="boletos"><strong>Selecciona la cantidad de boletos</strong></label>
+                        <select name="boletos" id="boletos">
+                            <option>Cantidad de boletos</option>
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                            <option value="4">4</option>
+                            <option value="5">5</option>
+                            <option value="6">6</option>
+                            <option value="7">7</option>
+                            <option value="8">8</option>
+                            <option value="9">9</option>
+                            <option value="10">10</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <button type="submit" class="myBtn rounded">Comprar</button>
+                    </div>
+                    {% else %}
+                    <a href="/seats"><button class="myBtn rounded">Consultar asientos</button></a>
+                    {% endif %}
+                {% else %}
+                    <p class="error"><strong class="text-danger">Aviso: </strong>No hay tandas disponibles para esta pelicula</p>
+                {% endif %}
+            </div>
+        </form>
     {% endfor %}
 {% endblock %}

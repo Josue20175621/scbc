@@ -5,8 +5,26 @@
 {% endblock %}
 
 {% block main %}
-    {% for movie in movies %}
-        <a href="{{ url_for('movie', id=movie[0]) }}"><img src="/static/images/posters/{{movie[9]}}" alt="{{movie[1]}}" width="267" height="400"></a>
+    <form action="/">
+        <button class="myBtn rounded" name="categoria" value="Horror">Horror</button>
+        <button class="myBtn rounded" name="categoria" value="Comedia">Comedia</button>
+        <button class="myBtn rounded" name="categoria" value="Accion">Accion</button>
+        <button class="myBtn rounded" name="categoria" value="Romance">Romance</button>
+        <button class="myBtn rounded" name="categoria" value="Fantasia">Fantasia</button>
+        <button class="myBtn rounded" name="categoria" value="Aventura">Aventura</button>
+        <button class="myBtn rounded" name="categoria" value="Infantil">Infantil</button>
+        <button class="myBtn rounded" name="categoria" value="Ciencia Ficcion">Ciencia Ficcion</button>
+        <button class="myBtn rounded" name="categoria" value="Drama">Drama</button>
+        <button class="myBtn rounded" name="categoria" value="Suspenso">Suspenso</button>
+        <button class="myBtn rounded" name="categoria" value="Musical">Musical</button>
+    </form>    
+    {% if error %}
+        <h1>{{error}}</h1>
+    {% elif categoria %}
+        <h1>Peliculas de {{categoria}}</h1>
+    {% endif %}
+    {% for movie in peliculas %}
+        <a href="{{ url_for('movie', id=movie[0]) }}"><img src="/static/images/posters/{{movie[2]}}" alt="{{movie[1]}}" width="267" height="400"></a>
         <h2>{{movie[1]}}</h2>
     {% endfor %}
 {% endblock %}

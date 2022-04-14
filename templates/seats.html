@@ -1,0 +1,23 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    {{ msg }}
+{% endblock %}
+
+{% block main %}
+    <h1>Pelicula {{ movie }}</h1>
+    <h2>Tanda {{ tanda }}</h2>
+    <p>Los asientos marcados en <strong class="text-danger">Rojo</strong> estan ocupados</p>
+    <h4 id="feedback" class="selected"></h4>
+    {% if session.user_id %}
+    <input type="hidden" id="n_seats" value="{{n_seats}}">
+    <h3>Selecciona {{ n_seats }} asientos</h1>
+    <div id="theater" class="center">
+        <script src="/static/selectSeats.js"></script>
+    </div>
+    {% else %}
+    <div id="theater" class="center">
+        <script src="/static/checkSeats.js"></script>
+    </div>
+    {% endif %}
+{% endblock %}

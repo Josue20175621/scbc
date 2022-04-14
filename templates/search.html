@@ -5,11 +5,24 @@
 {% endblock %}
 
 {% block main %}
-    <form action="/search" method="post" class="animated animatedFadeInUp fadeInUp">
-        <div class="form-group">
-            <h1>Buscar pelicula</h1>
-            <input autocomplete="off" autofocus class="form-control" name="title" placeholder="Titulo" type="text">
-        </div>
-        <button class="myBtn2 rounded" type="submit">Buscar</button>
-    </form>
+    {% if error %}
+        <h3>{{error}}</h3>
+    {% endif %}
+    {% if results %}
+        {% for result in results %}
+            <a href="{{ url_for('movie', id=result[0]) }}"><img src="/static/images/posters/{{result[2]}}" alt="{{result[1]}}" width="267" height="400"></a>
+            <h2>{{result[1]}}</h2>
+        {% endfor %}
+    {% else %}
+        <h1>Buscar Pelicula</h1>
+        <form action="/search" class="animated animatedFadeInUp fadeInUp">
+                <input type="radio" name="filter" value="actor" checked="checked">
+                <label class="sp" for="actor">Buscar por nombre de actor</label>
+                <input type="radio" name="filter" value="director">
+                <label class="sp" for="actor">Buscar por nombre de director</label>
+                <input type="radio" name="filter" value="pelicula">
+                <label class="sp" for="actor">Buscar por nombre de pelicula</label>
+                <input autocomplete="off" autofocus class="form-control" name="query" placeholder="Nombre" type="text" required>
+        </form>
+    {% endif %}
 {% endblock %}
