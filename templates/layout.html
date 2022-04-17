@@ -32,16 +32,9 @@
                         <li class="nav-item">Usuario: {{session.email}}</li>
                     </ul>
                     <ul class="navbar-nav ml-auto mt-2">
+                        <li class="nav-item"><a class="nav-link" href="/history">Historial Boletos</a></li>
                         <li class="nav-item"><a class="nav-link" href="/logout">Cerrar Sesion</a></li>
-                    </ul>
-                {% elif session.admin_id%}
-                    <ul class="navbar-nav mr-auto mt-2">
-                        <li class="nav-item">Logueado como Administrador de cine</li>
-                    </ul>
-                    <ul class="navbar-nav ml-auto mt-2">
-                        <li class="nav-item"><a class="nav-link" href="/admin">Administrar cine</a></li>
-                        <li class="nav-item"><a class="nav-link" href="/logout">Cerrar Sesion</a></li>
-                    </ul>
+                    </ul>                
                 {% else %}
                     <ul class="navbar-nav ml-auto mt-2">
                         <li class="nav-item"><a class="nav-link" href="/register">Registrate</a></li>

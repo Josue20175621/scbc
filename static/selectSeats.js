@@ -1,11 +1,53 @@
+const formatDate = (date) => {
+    let d = new Date(date);
+    let month = (d.getMonth() + 1).toString();
+    let day = d.getDate().toString();
+    let year = d.getFullYear();
+    let hours = d.getHours().toString()
+    let minutes = d.getMinutes().toString()
+    let seconds = d.getSeconds().toString()
+    if (hours.length < 2) {
+        hours = '0' + hours;
+    }
+
+    if (minutes.length < 2) {
+        minutes = '0' + minutes
+    }
+
+    if (seconds.length < 2) {
+        seconds = '0' + seconds
+    }
+
+    if (month.length < 2) {
+      month = '0' + month;
+    }
+    if (day.length < 2) {
+      day = '0' + day;
+    }
+    return [year, month, day].join('-') + ' ' + [hours, minutes, seconds].join(":");
+}
+
+let fecha = formatDate(new Date());
+
+
 var index;
 var tickets = Number(document.querySelector('#n_seats').value)
+var boton_actualizar = document.querySelector('#update');
+var id_usuario = Number(document.querySelector('#usuario_id').value)
+var id_tanda = Number(document.querySelector('#tanda_id').value)
+var id_sala = Number(document.querySelector('#sala_id').value)
+var asientos = Number(document.querySelector('#asientos').value)
+const m = Math.sqrt(asientos)
+
+boton_actualizar.addEventListener('click', () => {
+    console.log("Actualizando asientos")
+    updateSeats()
+})
 var count = 0;
-var redirect_in_seconds = 3;
 const THEATER = document.getElementById("theater")
-const ROWS = 9
-const SEATS_PER_ROW = 9
-const ROW_BLOCK_BACKGROUND_COLOR = "#1E377F"
+const ROWS = m
+const SEATS_PER_ROW = m
+const ROW_BLOCK_BACKGROUND_COLOR = "#eb7163"
 const SEAT_NOT_AVAILABLE = "#F52560"
 const ROW_BLOCK_TEXT_COLOR = "#FFF"
 const SEAT_SELECTED_BACKGROUND_COLOR = "#00CD2A"
@@ -68,17 +110,17 @@ function markSeat(row, column) {
         feed_back.innerText = "Asientos: " + seats_arr
 
         if (count == tickets)
-        {
-            // Redirect after 3 seconds
-            console.log(`Redirecting in ${redirect_in_seconds} seconds`)
-            //var interval = setInterval(redirect, redirect_in_seconds * 1000, `http://${location.hostname}:5000/success`);
-            
-            // send seats to server
-            /*
+        {        
+            // Envia los asientos al servidor
+            var s = ""
             for (let i = 0; i < seats_arr.length; i++) {
-                sendSeatToServer(seats_arr[i])
+                s += `${seats_arr[i]},`
             }
-            */
+            
+            sendSeatsToServer(s)
+
+            var interval = setInterval(redirect, 3000, `http://${location.host}/history`);
+            
         }
     }
 }
@@ -86,34 +128,80 @@ function markSeat(row, column) {
 setup()
 var feed_back = document.querySelector('#feedback')
 
-async function sendSeatToServer(seat) {
+async function sendSeatsToServer(seats) {
 
-    fetch(`/seat/${seat}`)
-    .then(function (response) {
-        return response.text();
-    }).then(function (text) {
-        console.log(text);
+    var data = {
+        "idUsuario": id_usuario,
+        "idSala": id_sala,
+        "idTanda": id_tanda,
+        "asientos": seats
+    };
+
+    var data2 = {
+        "idUsuario": id_usuario,
+        "idSala": id_sala,
+        "idTanda": id_tanda,
+        "fecha": fecha,
+        "boletos": tickets
+    };
+
+    fetch('/update', {
+    method: 'POST',
+    headers: {
+        'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(data),
+    })
+    .then(response => response.json())
+    .then(data => {
+
+        console.log('Servidor recibio los asientos:', data);
+    })
+    .catch((error) => {
+        console.error('Error:', error);
+    });
+
+    fetch('/checkout', {
+    method: 'POST',
+    headers: {
+        'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(data2),
+    })
+    .then(response => response.json())
+    .then(data => {
+
+        console.log('Servidor recibio los datos del boleto', data);
+    })
+    .catch((error) => {
+        console.error('Error:', error);
     });
 }
 
 async function updateSeats() {
     
-    const requestURL = `http://${location.hostname}:3502/seats`;
-    const request = new Request(requestURL);
-
-    const response = await fetch(request);
-    const seats = await response.json();
-
-    for (var seat in seats) {
-        // marked
-        if (Number(seats[seat]) == 1 && !seats_arr.includes(seat)) {
-            var s_selector = document.getElementsByClassName(`seat ${seat[0]} ${seat[1]}`)
+    var data = {
+        "idTanda": id_tanda
+    };
+    
+    fetch('/updateC', {
+    method: 'POST',
+    headers: {
+        'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(data),
+    })
+    .then(response => response.json())
+    .then(asientos => {
+        for (var asiento in asientos) {
+            var s_selector = document.getElementsByClassName(`seat ${asiento[0]} ${asiento[1]}`)
             s_selector[0].style.background = SEAT_NOT_AVAILABLE
-            s_selector[0].style.color = SEAT_SELECTED_TEXT_COLOR
+            s_selector[0].style.color = "#FFF"
         }
-    }
+    })
+    .catch((error) => {
+        console.error('Error:', error);
+    });
 }
 
-// update seats every 10 seconds
-// this is for the user
-//var update = setInterval(updateSeats, 10000);
+updateSeats()

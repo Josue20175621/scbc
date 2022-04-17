@@ -6,10 +6,15 @@
 
 {% block main %}
     <h1>Pelicula {{ movie }}</h1>
-    <h2>Tanda {{ tanda }}</h2>
+    <input type="hidden" id="tanda_id" value="{{tanda[0]}}">
+    <input type="hidden" id="asientos" value="{{asientos}}">
+    <h2>Tanda {{ tanda[1] }}</h2>
     <p>Los asientos marcados en <strong class="text-danger">Rojo</strong> estan ocupados</p>
     <h4 id="feedback" class="selected"></h4>
+    <button id="update" class="myBtn rounded">Actualizar asientos</button>
     {% if session.user_id %}
+    <input type="hidden" id="usuario_id" value="{{idUsuario}}">
+    <input type="hidden" id="sala_id" value="{{idSala}}">
     <input type="hidden" id="n_seats" value="{{n_seats}}">
     <h3>Selecciona {{ n_seats }} asientos</h1>
     <div id="theater" class="center">

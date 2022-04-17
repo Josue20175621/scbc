@@ -1,0 +1,43 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Historial de boletos
+{% endblock %}
+
+{% block main %}
+    {% if error %}
+        <h1>{{error}}</h1>
+    {% else %}
+    <div class="limiter animated animatedFadeInUp fadeInUp">
+		<h1>Historial de boletos</h1>
+		<div class="container-table100">
+			<div class="wrap-table100">
+				<div class="table100">
+					<table>
+						<thead>
+							<tr class="table100-head">
+								<th class="column1">Pelicula</th>
+								<th class="column2">Tanda</th>
+								<th class="column3">Sala</th>
+                                <th class="column4">Total</th>
+                                <th class="column5">Asientos</th>
+							</tr>
+						</thead>
+						<tbody>
+                            {% for boleto in boletos %}
+                            <tr>
+                                <td class="column1">{{boleto[0]}}</td>
+                                <td class="column2">{{format_time(boleto[1])}}</td>
+                                <td class="column3">{{boleto[2]}}</td>
+                                <td class="column4">RD$ {{boleto[3]}}</td>
+                                <td class="column5">{{asientos[loop.index - 1]}}</td>
+                            </tr>
+                            {% endfor %}
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+	</div>
+    {% endif %}
+{% endblock %}

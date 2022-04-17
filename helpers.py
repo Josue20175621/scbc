@@ -1,5 +1,4 @@
-from flask import redirect, session, flash
-from werkzeug.security import check_password_hash, generate_password_hash #sha256
+from flask import redirect, session
 from functools import wraps
 
 def login_required(f):
@@ -20,6 +19,13 @@ def format(l):
     for i in l:
         _str += f"{i[0]}, "
     return _str[:len(_str) - 2]
+
+def format_seat(seat):
+    a = ""
+    for i in seat:
+        a += f"{i[3]}{i[4]}, "
+    return a[:len(a) - 2]
+    
 
 def format_time(time):
     f_time = time.split()[1]

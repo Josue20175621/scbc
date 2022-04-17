@@ -1,9 +1,18 @@
 const THEATER = document.getElementById("theater")
-const ROWS = 9
-const SEATS_PER_ROW = 9
-const ROW_BLOCK_BACKGROUND_COLOR = "#1E377F"
+const ROW_BLOCK_BACKGROUND_COLOR = "#eb7163"
 const SEAT_NOT_AVAILABLE = "#F52560"
 const ROW_BLOCK_TEXT_COLOR = "#FFF"
+var id_tanda = Number(document.querySelector('#tanda_id').value)
+var asientos = Number(document.querySelector('#asientos').value)
+
+const m = Math.sqrt(asientos)
+const ROWS = m
+const SEATS_PER_ROW = m
+var boton_actualizar = document.querySelector('#update');
+boton_actualizar.addEventListener('click', () => {
+    console.log("Actualizando asientos")
+    updateSeats()
+})
 var rowMap = {0: "A", 1: "B", 2: "C", 3: "D", 4: "E", 5: "F", 6: "G", 7: "H", 8: "I"}
 
 function createSeat(r_number, column) {
@@ -50,18 +59,29 @@ setup()
 
 async function updateSeats() {
     
-    const requestURL = `http://${location.hostname}:3502/seats`;
-    const request = new Request(requestURL);
-
-    const response = await fetch(request);
-    const seats = await response.json();
-
-    for (var seat in seats) {
-        // marked
-        if (Number(seats[seat]) == 1 && !seats_arr.includes(seat)) {
-            var s_selector = document.getElementsByClassName(`seat ${seat[0]} ${seat[1]}`)
+    var data = {
+        "idTanda": id_tanda
+    };
+    
+    fetch('/updateC', {
+    method: 'POST',
+    headers: {
+        'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(data),
+    })
+    .then(response => response.json())
+    .then(asientos => {
+        console.log('Servidor recibio la data:', asientos);
+        for (var asiento in asientos) {
+            var s_selector = document.getElementsByClassName(`seat ${asiento[0]} ${asiento[1]}`)
             s_selector[0].style.background = SEAT_NOT_AVAILABLE
-            s_selector[0].style.color = SEAT_SELECTED_TEXT_COLOR
+            s_selector[0].style.color = "#FFF"
         }
-    }
+    })
+    .catch((error) => {
+        console.error('Error:', error);
+    });
 }
+
+updateSeats()

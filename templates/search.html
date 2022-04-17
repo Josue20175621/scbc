@@ -16,12 +16,12 @@
     {% else %}
         <h1>Buscar Pelicula</h1>
         <form action="/search" class="animated animatedFadeInUp fadeInUp">
-                <input type="radio" name="filter" value="actor" checked="checked">
+                <input type="radio" id="actor" name="filter" value="actor" checked="checked">
                 <label class="sp" for="actor">Buscar por nombre de actor</label>
-                <input type="radio" name="filter" value="director">
-                <label class="sp" for="actor">Buscar por nombre de director</label>
-                <input type="radio" name="filter" value="pelicula">
-                <label class="sp" for="actor">Buscar por nombre de pelicula</label>
+                <input type="radio" id="director" name="filter" value="director">
+                <label class="sp" for="director">Buscar por nombre de director</label>
+                <input type="radio" id="pelicula" name="filter" value="pelicula">
+                <label class="sp" for="pelicula">Buscar por nombre de pelicula</label>
                 <input autocomplete="off" autofocus class="form-control" name="query" placeholder="Nombre" type="text" required>
         </form>
     {% endif %}

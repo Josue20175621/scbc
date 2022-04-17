@@ -8,6 +8,12 @@
     {% for movie in info_pelicula %}
         <h1>{{movie[0]}}</h1>
         <img src="/static/images/posters/{{movie[3]}}" alt="{{movie[0]}}" width="267" height="400">
+        {% if local %}
+        <video width="600" height="337" id="video" controls muted autoplay>
+            <source src="/static/trailers/{{video}}.mp4#t=120" type="video/mp4">
+            Your browser does not support the video tag.
+        </video>
+        {% endif %}
         
         <p><strong>Dirigida por: </strong>{{directores}}</p>
         <p><strong>Actores: </strong>{{actores}}</p>
@@ -21,20 +27,21 @@
 
         <form action="/seats" method="post">
             <input type="hidden" name="movie_name" value="{{movie[0]}}"/>
+            <strong>Precio Boleto: RD${{precio}}</strong>
             <div class="form-group">
                 {% if tandas %}
                 <label for="tanda"><strong>Selecciona la tanda</strong></label>
-                <select name="tanda" id="tanda">
-                    <option>Tanda</option>
+                <select name="tanda" id="tanda" required>
+                    <option value="">Tanda</option>
                     {% for tanda in tandas %}
-                        <option value="{{format_time(tanda[3])}}">{{format_time(tanda[3])}}</option>
+                        <option value="{{tanda[0]}}${{format_time(tanda[3])}}">{{format_time(tanda[3])}}</option>
                     {% endfor %}
                 </select>
                     {% if session.user_id %}
                     <div class="form-group">
                         <label for="boletos"><strong>Selecciona la cantidad de boletos</strong></label>
-                        <select name="boletos" id="boletos">
-                            <option>Cantidad de boletos</option>
+                        <select name="boletos" id="boletos" required>
+                            <option value="">Cantidad de boletos</option>
                             <option value="1">1</option>
                             <option value="2">2</option>
                             <option value="3">3</option>
@@ -51,7 +58,7 @@
                         <button type="submit" class="myBtn rounded">Comprar</button>
                     </div>
                     {% else %}
-                    <a href="/seats"><button class="myBtn rounded">Consultar asientos</button></a>
+                    <button type="submit" class="myBtn rounded">Consultar asientos</button>
                     {% endif %}
                 {% else %}
                     <p class="error"><strong class="text-danger">Aviso: </strong>No hay tandas disponibles para esta pelicula</p>
